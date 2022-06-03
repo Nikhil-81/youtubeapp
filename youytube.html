@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+   <style>
+        img{
+        width:9%
+    }
+
+    .box2{
+    
+    display: flex;
+    margin-right: 185px;
+    align-items: center;
+
+    }
+    .nev{
+        display: flex;
+        align-items: center;
+    }
+    input#input {
+    width: 550px;
+    height: 32px;
+}
+.box3 {
+    display: flex;
+    column-gap: 25px;
+}
+.box1 {
+    display: flex;
+    align-items: center;
+    column-gap: 20px;
+}
+.box2>.material-symbols-outlined {
+    border: 1px solid;
+    padding: 6px;
+}
+.cont {
+    display: grid;
+    grid-template-columns: repeat(3,1fr);
+    width: 95%;
+    margin: auto;
+    column-gap: 85px;
+}
+   </style>
+   
+   
+
+</head>
+<body>
+    <div class="nev">
+        <div class="box1">
+            <span class="material-symbols-outlined">
+                density_small
+                </span>
+                <img src="icons/youtube-brands.svg"/>
+              
+        </div>
+        <div class="box2">
+            <div>
+                <input oninput="debounce()" placeholder="sherch" id="input" class="input" >
+        
+                
+            </div>
+            <span onclick="find()" class="material-symbols-outlined">
+                search
+                </span>
+            
+            <span class="material-symbols-outlined">
+                mic
+                </span>
+        </div>
+        <div class="box3">
+            <span class="material-symbols-outlined">
+                video_call
+                </span>
+                <span class="material-symbols-outlined">
+                    apps
+                    </span>
+                    <span class="material-symbols-outlined">
+                        notifications
+                        </span>
+                        <span class="material-symbols-outlined">
+                            account_circle
+                            </span>
+        </div>
+    
+       
+    </div>
+<br/>
+    <div class="cont"></div>
+</body>
+</html>
+    <script>
+        let id;
+    // const url=  `https://youtube.googleapis.com/youtube/v3/search?part=snippet&channelType=any&eventType=none&maxResults=20&q=${q}&key=${AIzaSyBQt2qUQsQP9MwiA3KnvSrIorGEtOnNC18}` 
+    const key="AIzaSyBQt2qUQsQP9MwiA3KnvSrIorGEtOnNC18"
+    
+    // function main(){
+    //     let querry=document.querySelector("#input")
+    //     console.log(querry.value)
+    //     fetchurl(querry)
+    // }
+
+
+     // async function fetchurl(q){
+    //     try{
+    //         let url=`https://youtube.googleapis.com/youtube/v3/search?part=snippet&channelType=any&eventType=none&maxResults=20&q=${q}&key=AIzaSyBQt2qUQsQP9MwiA3KnvSrIorGEtOnNC18`
+    //         let fetchdata=await fetch(url)
+    //         console.log(await fetchdata.json())
+    //     }
+    //     catch{
+    //         console.log("buy")
+    //     }
+    // }
+
+        // async function debounce(func,delay){
+    //     if(id){
+    //         clearInterval(id)
+    //     }
+    //     id=setTimeout(function(){
+    //         main()
+    //     },3000)
+    // }
+
+    
+    let arr= []
+    
+    
+    let main=() =>{
+        let querry=document.querySelector("#input")
+        console.log(querry.value)
+        fetchurl(querry)
+    }
+    let fetchurl= async (q) =>{
+        try{
+            let url=`https://youtube.googleapis.com/youtube/v3/search?part=snippet&channelType=any&eventType=none&maxResults=20&q=${q}&key=AIzaSyBQt2qUQsQP9MwiA3KnvSrIorGEtOnNC18`
+            let fetchdata=await fetch(url)
+            let data=await fetchdata.json()
+        
+            display(data.items)
+        }
+        catch{
+            console.log("buy")
+        }
+    }
+   let debounce =async(func,delay)=>{
+    if(id){
+            clearInterval(id)
+        }
+        id=setTimeout(function(){
+            main()
+        },1000)
+   }
+   let cont=document.querySelector(".cont")
+   let display= (data)=>{
+       cont.innerHTML=[]
+   console.log(data)
+    data.forEach(({id:{ videoId },snippet:{ title }})=>{
+        let div=document.createElement("div")
+        console.log(videoId,title)
+        let iframe=document.createElement("iframe")
+        // let id=x.id.videoId
+        // let {videoId}=x
+        iframe.src=`https://www.youtube.com/embed/${videoId}`
+        let h3=document.createElement("h3")
+        h3.innerHTML=title
+        div.append(iframe,h3)
+        cont.append(div)
+        div.addEventListener("click",function(){
+            start(videoId)
+        })
+    })
+function start(videoId,title){
+    arr.push(videoId)
+    // console.log(el)
+localStorage.setItem("video",JSON.stringify(arr))
+window.location.href="viewpage.html"
+}
+}
+
+</script>
+
+<!-- curl \
+  'https://youtube.googleapis.com/youtube/v3/search?part=snippet&channelType=any&eventType=none&maxResults=20&q=thor&key=AIzaSyBQt2qUQsQP9MwiA3KnvSrIorGEtOnNC18' \
+  --header 'Authorization: Bearer [YOUR_ACCESS_TOKEN]' \
+  --header 'Accept: application/json' \
+  --compressed -->
+
+  <!-- <iframe width="560" height="315" 
+  src="https://www.youtube.com/embed/F6T5EAj1g_4" 
+  title="YouTube video player" 
+  frameborder="0" 
+  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+  allowfullscreen></iframe> -->
+
+
+
+
